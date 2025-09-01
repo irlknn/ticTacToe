@@ -1,10 +1,25 @@
 <script>
+import { ref, onMounted } from 'vue'
 import io from 'socket.io-client'
+import { useRoute } from 'vue-router'
+
 const socket = io('http://localhost:3000')
+const route = useRoute()
+
+onMounted(() => {
+  socket.emit('joinRoom', { roomId: this.roomId })
+  console.log('Connected to room:', this.roomId)
+})
 
 export default {
   name: 'GameContainer',
   components: {},
+  props: {
+    roomId: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       content: ['', '', '', '', '', '', '', '', ''],
@@ -16,15 +31,11 @@ export default {
   },
   methods: {
     draw(index, drawFromOther) {
-      if(this.content[index] == ''){
-        if (this.turn ) {
-          this.content[index] = 'X'
-        } else {
-          this.content[index] = 'O'
-        }
+      if (this.content[index] == '') {
+        this.content[index] = this.turn ? 'X' : 'O';
 
         if (!drawFromOther) {
-          socket.emit("play", index);
+          socket.emit('play', { roomId: this.roomId, index })
         }
         this.turn = !this.turn
         this.calculateWinner()
@@ -60,7 +71,8 @@ export default {
           return
         }
       }
-      this.isTie = true
+      if (!this.isOver)
+        this.isTie = true
     },
     resetBoard() {
       this.content = ['', '', '', '', '', '', '', '', '']
@@ -72,16 +84,18 @@ export default {
   },
   created() {
     socket.on('play', (index) => {
-      console.log('received index: ', index);
-      this.draw(index, true);
-    })
+      console.log('received index: ', index)
+      this.draw(index, true)
+    });
+    socket.emit('joinRoom', this.roomId);
   },
 }
 </script>
 
 <template>
-  <button @click="state = !state">Toggle State {{ console.log(state) }}</button>
-
+  <div class="textContainer">
+    <p class="text">room id {{ this.roomId }}</p>
+  </div>
   <div class="cellContainer">
     <div id="cell0" class="cell" @click="draw(0, false)">{{ content[0] }}</div>
     <div id="cell1" class="cell" @click="draw(1, false)">{{ content[1] }}</div>
@@ -93,12 +107,29 @@ export default {
     <div id="cell7" class="cell" @click="draw(7, false)">{{ content[7] }}</div>
     <div id="cell7" class="cell" @click="draw(8, false)">{{ content[8] }}</div>
   </div>
-  <h2 v-if="isTie">Game is tie</h2>
-  <h2 id="winner" v-if="isOver">Winner is {{ winner }}</h2>
-  <button id="RestartButton" @click="resetBoard()" v-if="isOver || isTie">Reset Game</button>
+  <div class="textContainer">
+
+    <p class="text" v-if="isTie">Game is tie</p>
+    <p class="text" id="winner" v-if="isOver">Winner is {{ winner }}</p>
+    <button id="RestartButton" @click="resetBoard()" v-if="isOver || isTie">Reset Board</button>
+  </div>
+  <button id="backButton" @click="$router.push('/')">Leave</button>
 </template>
 
 <style>
+.text {
+  font-family: 'Permanent Marker', cursive;
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin: 10px 0;
+}
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+}
 .cell {
   background-color: rgb(110, 110, 110);
   width: 100px;
@@ -110,6 +141,11 @@ export default {
   color: white;
   font-weight: bold;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cell:hover {
+  background-color: rgb(160, 160, 160);
 }
 
 .cellContainer {
@@ -121,5 +157,28 @@ export default {
   grid-row-gap: 5px;
 
   background-color: rgba(218, 218, 218);
+}
+
+#RestartButton, #backButton {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(110, 110, 110);
+  color: white;
+  transition: background-color 0.4s ease;
+}
+
+#RestartButton {
+  margin-bottom: 20px;
+}
+
+#RestartButton:hover {
+  background-color: rgb(30, 105, 25);
+}
+
+#backButton:hover {
+  background-color: rgb(101, 20, 20);
 }
 </style>

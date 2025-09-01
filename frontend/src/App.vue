@@ -1,18 +1,21 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import GameContainer from './components/GameContainer.vue'
+import GameContainer from './components/GameBoard.vue'
 import Menu from './views/MenuView.vue'
 </script>
 
 <template>
-  <h1>Tic Tac Toe</h1>
   <div id="app" class="app">
+    <h1>Tic Tac Toe</h1>
     <RouterView />
   </div>
 </template>
 
 <style scoped>
-h1{
+h1 {
+  position: fixed;
+  top: 10px;
+  font-family: 'Permanent Marker', cursive;
   font-weight: 700;
 }
 .app {
@@ -20,7 +23,7 @@ h1{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 90vh;
+  height: 100vh;
 
   text-align: center;
   font-family: 'Permanent Marker', cursive;

@@ -1,20 +1,27 @@
 <script>
+import Join from '../components/Join.vue'
 import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+
 export default {
+  components: { Join },
   setup() {
     const router = useRouter()
+    const inputValue = ref('')
+
     function goBack() {
       router.push('/')
     }
-    return { goBack }
+    
+    return { goBack, inputValue }
   },
 }
 </script>
 
 <template>
   <div class="container">
-    <input class="inputContainer" type="text" />
-    <button>Join</button>
+    <input id="inputId" class="inputContainer" type="text"  v-model="inputValue"/>
+    <Join :roomId="inputValue"/>
   </div>
   <button id="backButton" @click="goBack">Back</button>
 </template>
@@ -35,17 +42,6 @@ export default {
   align-items: center;
   justify-content: center;
   gap: 20px;
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: rgb(30, 105, 25);
-  color: white;
-  transition: background-color 0.3s ease;
 }
 
 #backButton {

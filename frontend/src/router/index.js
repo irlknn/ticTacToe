@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import JoinView from '../views/JoinView.vue'
 import Menu from '../views/MenuView.vue'
-import GameRoom from '../components/GameContainer.vue'
+import GameBoard from '../components/GameBoard.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,9 +17,10 @@ const router = createRouter({
       component: JoinView,
     },
     {
-      path: '/gameRoom',
-      name: 'gameRoom',
-      component: GameRoom,
+      path: '/game/:roomId',
+      name: 'gameBoard',
+      component: GameBoard,
+      props: true,
     },
   ],
 })

@@ -1,6 +1,6 @@
 <script>
 import { ref } from 'vue'
-import RoomIDComponent from '../components/RoomIDComponent.vue'
+import RoomIDComponent from '../components/RoomService.vue'
 import { useRouter } from 'vue-router'
 
 export default {
