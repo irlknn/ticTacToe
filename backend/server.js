@@ -1,5 +1,4 @@
 const express = require('express')
-const path = require('path')
 const app = express()
 const http = require('http')
 const { Server } = require('socket.io')
@@ -8,13 +7,13 @@ const server = http.createServer(app)
 const io = new Server(server, { cors: { origin: "*" } })
 
 // serve frontend build
-app.use(express.static(path.join(__dirname, '../frontend/dist')))
+// app.use(express.static(path.join(__dirname, '../frontend/dist')))
 
-app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'))
-})
+// app.get(/.*/, (req, res) => {
+//   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'))
+// })
 
-const { error } = require('console');
+// const { error } = require('console');
 
 io.on('connection', (socket) => {
     console.log('user connected');
