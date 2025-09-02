@@ -20,7 +20,6 @@ function createAndGo() {
   <div class="container">
     <h2>Room id</h2>
     <p>{{ room }}</p>
-    <button @click="createAndGo">Start Game</button>
     <Join :roomId="room" />
   </div>
 </template>

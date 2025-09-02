@@ -51,7 +51,7 @@ function joinRoom(roomId) {
   <button @click="joinRoom(props.roomId)" class="joinButton" :disabled="isDisabled || !props.roomId">
     Join
   </button>
-  <p>{{ notification }}</p>
+  <p class="text">{{ notification }}</p>
 </template>
 <!-- <script>
 import io from 'socket.io-client'
@@ -88,6 +88,13 @@ function joinRoom(roomId) {
 </template> -->
 
 <style>
+.text {
+  font-family: 'Permanent Marker', cursive;
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin: 10px 0;
+}
+
 .joinButton {
   padding: 10px 20px;
   font-size: 1.2rem;

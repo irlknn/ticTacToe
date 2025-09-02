@@ -92,6 +92,10 @@ button {
   transition: background-color 0.3s ease;
 }
 
+button:hover {
+  background-color: rgb(149, 149, 149);
+}
+
 .joinLink {
   text-decoration: none;
   color: white;
