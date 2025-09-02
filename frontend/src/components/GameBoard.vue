@@ -9,17 +9,6 @@ const router = useRoute()
 onMounted(() => {
   socket.emit('joinRoom', { roomId: props.roomId })
   console.log('Connected to room:', this.roomId)
-  socket.on('resetGame', () => {
-    this.content = ['', '', '', '', '', '', '', '', '']
-    this.turn = true
-    this.isOver = false
-    this.isTie = false
-    this.winner = null
-  })
-  socket.on('play', (index) => {
-    console.log('received index: ', index)
-    this.draw(index, true)
-  })
 })
 
 export default {
@@ -93,6 +82,19 @@ export default {
       socket.disconnect()
       this.$router.push('/')
     },
+  },
+  created() {
+    socket.on('resetGame', () => {
+      this.content = ['', '', '', '', '', '', '', '', '']
+      this.turn = true
+      this.isOver = false
+      this.isTie = false
+      this.winner = null
+    })
+    socket.on('play', (index) => {
+      console.log('received index: ', index)
+      this.draw(index, true)
+    })
   },
 }
 </script>
