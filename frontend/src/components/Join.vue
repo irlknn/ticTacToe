@@ -4,7 +4,7 @@ import io from 'socket.io-client'
 import { defineProps, ref, watch, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
-  roomId: { type: String, required: true }
+  roomId: { type: String, required: true },
 })
 
 const socket = io('http://localhost:3000')
@@ -31,10 +31,13 @@ onUnmounted(() => {
   socket.off('roomJoined', onRoomJoined)
 })
 
-watch(() => props.roomId, (newVal) => {
-  notification.value = 'Click Join to enter the game room'
-  isDisabled.value = false
-})
+watch(
+  () => props.roomId,
+  (newVal) => {
+    notification.value = 'Click Join to enter the game room'
+    isDisabled.value = false
+  },
+)
 
 function joinRoom(roomId) {
   if (!props.roomId) {
@@ -48,7 +51,11 @@ function joinRoom(roomId) {
 </script>
 
 <template>
-  <button @click="joinRoom(props.roomId)" class="joinButton" :disabled="isDisabled || !props.roomId">
+  <button
+    @click="joinRoom(props.roomId)"
+    class="joinButton"
+    :disabled="isDisabled || !props.roomId"
+  >
     Join
   </button>
   <p class="text">{{ notification }}</p>

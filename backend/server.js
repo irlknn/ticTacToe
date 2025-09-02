@@ -1,12 +1,28 @@
+const express = require('express')
+const path = require('path')
+const app = express()
+const http = require('http')
+const { Server } = require('socket.io')
+
+const server = http.createServer(app)
+const io = new Server(server, { cors: { origin: "*" } })
+
+// serve frontend build
+app.use(express.static(path.join(__dirname, '../frontend/dist')))
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'))
+})
+
 const { error } = require('console');
 
-const server = require('http').createServer();
-const io = require('socket.io')(server, {
-    cors: {
-        origin: 'http://localhost:5173',
-        methods: ['GET', 'POST'],
-    }
-});
+// const server = require('http').createServer();
+// const io = require('socket.io')(server, {
+//     cors: {
+//         origin: 'http://localhost:5173',
+//         methods: ['GET', 'POST'],
+//     }
+// });
 
 io.on('connection', (socket) => {
     console.log('user connected');
@@ -66,12 +82,9 @@ io.on('connection', (socket) => {
         const room = io.sockets.adapter.rooms.get(roomId);
         const size = room ? room.size : 0;
         console.log(`Socket ${socket.id} left room ${roomId}. Now ${size} players left.`)
-        
+
     });
 });
 
-io.of("/").adapter.on("joinRoom", (roomId) => {
-    console.log(`room ${roomId} created`);
-});
-
-server.listen(3000);
+const PORT = process.env.PORT || 3000
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`))

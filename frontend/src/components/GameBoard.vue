@@ -34,7 +34,7 @@ export default {
   methods: {
     draw(index, drawFromOther) {
       if (this.content[index] == '') {
-        this.content[index] = this.turn ? 'X' : 'O';
+        this.content[index] = this.turn ? 'X' : 'O'
 
         if (!drawFromOther) {
           socket.emit('play', { roomId: this.roomId, index })
@@ -73,15 +73,14 @@ export default {
           return
         }
       }
-      if (!this.isOver)
-        this.isTie = true
+      if (!this.isOver) this.isTie = true
     },
     resetBoard() {
-      socket.emit('resetGame', this.roomId);
+      socket.emit('resetGame', this.roomId)
     },
     leaveGame() {
-      socket.emit('leaveRoom', this.roomId);
-      socket.disconnect();
+      socket.emit('leaveRoom', this.roomId)
+      socket.disconnect()
       this.$router.push('/')
     },
   },
@@ -92,12 +91,12 @@ export default {
       this.isOver = false
       this.isTie = false
       this.winner = null
-    });
+    })
     socket.on('play', (index) => {
       console.log('received index: ', index)
       this.draw(index, true)
-    });
-    socket.emit('joinRoom', this.roomId);
+    })
+    socket.emit('joinRoom', this.roomId)
   },
 }
 </script>
@@ -120,7 +119,7 @@ export default {
   <div class="textContainer">
     <p class="text" v-if="!isOver && !isTie">Turn: {{ turn ? 'X' : 'O' }}</p>
     <p class="text" id="winner" v-if="isTie || isOver">
-      {{ isTie ? "Game is tie" : `Winner is ${winner}` }}
+      {{ isTie ? 'Game is tie' : `Winner is ${winner}` }}
     </p>
     <button id="RestartButton" @click="resetBoard()" v-if="isOver || isTie">Reset Board</button>
   </div>

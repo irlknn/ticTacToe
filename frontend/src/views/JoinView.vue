@@ -12,7 +12,7 @@ export default {
     function goBack() {
       router.push('/')
     }
-    
+
     return { goBack, inputValue }
   },
 }
@@ -20,8 +20,8 @@ export default {
 
 <template>
   <div class="container">
-    <input id="inputId" class="inputContainer" type="text"  v-model="inputValue"/>
-    <Join :roomId="inputValue"/>
+    <input id="inputId" class="inputContainer" type="text" v-model="inputValue" />
+    <Join :roomId="inputValue" />
   </div>
   <button id="backButton" @click="goBack">Back</button>
 </template>
