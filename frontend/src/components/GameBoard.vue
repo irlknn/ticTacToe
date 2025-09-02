@@ -4,7 +4,7 @@ import io from 'socket.io-client'
 import { useRoute } from 'vue-router'
 import { node } from 'globals'
 
-const socket = io(import.meta.env.VITE_BACKEND_URL || window.location.origin)
+const socket = io(import.meta.env.VITE_BACKEND_URL)
 const router = useRoute()
 
 onMounted(() => {

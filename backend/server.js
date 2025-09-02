@@ -7,9 +7,8 @@ const server = http.createServer(app)
 const io = new Server(server, {
   cors: {
     origin: "https://tic-tac-toe-lmel.onrender.com",
-    methods: ["GET", "POST"]
-  }
-})
+  },
+});
 // const io = new Server(server, { cors: { origin: "*" } })
 
 io.on('connection', (socket) => {
