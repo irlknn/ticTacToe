@@ -129,7 +129,7 @@ export default {
 
 <style>
 .text {
-  font-family: 'Permanent Marker', cursive;
+  font-family: 'Permanent Marker', 'Rock Salt', 'Arial', cursive;
   font-weight: bold;
   font-size: 1.3rem;
   margin: 10px 0;
