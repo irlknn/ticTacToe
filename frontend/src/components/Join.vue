@@ -96,7 +96,7 @@ function joinRoom(roomId) {
 
 <style>
 .text {
-  font-family: 'Permanent Marker', 'Rock Salt', 'Arial', cursive;
+  font-family: 'Arial';
   font-weight: bold;
   font-size: 1.3rem;
   margin: 10px 0;
@@ -111,5 +111,6 @@ function joinRoom(roomId) {
   background-color: rgb(30, 105, 25);
   color: white;
   transition: background-color 0.3s ease;
+  font-family: 'Arial';
 }
 </style>

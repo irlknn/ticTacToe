@@ -46,6 +46,7 @@ export default {
 
 #backButton {
   margin-top: 40px;
+  font-family: 'Arial';
   background-color: rgb(105, 25, 25);
 }
 </style>

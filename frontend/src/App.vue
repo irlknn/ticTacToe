@@ -1,9 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import GameContainer from './components/GameBoard.vue'
-import Menu from './views/MenuView.vue'
-console.log("Backend URL:", import.meta.env.VITE_BACKEND_URL);
-
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
@@ -17,7 +13,7 @@ console.log("Backend URL:", import.meta.env.VITE_BACKEND_URL);
 h1 {
   position: fixed;
   top: 10px;
-  font-family: 'Permanent Marker', 'Rock Salt', 'Arial', cursive;
+  font-family: 'Rock Salt', 'Arial';
   font-weight: 700;
 }
 .app {
@@ -28,6 +24,6 @@ h1 {
   height: 100vh;
 
   text-align: center;
-  font-family: 'Permanent Marker', 'Rock Salt', 'Arial', cursive;
+  font-family: 'Arial';
 }
 </style>

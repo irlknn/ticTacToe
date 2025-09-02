@@ -129,7 +129,7 @@ export default {
 
 <style>
 .text {
-  font-family: 'Permanent Marker', 'Rock Salt', 'Arial', cursive;
+  font-family: 'Arial';
   font-weight: bold;
   font-size: 1.3rem;
   margin: 10px 0;
@@ -144,6 +144,7 @@ export default {
 }
 
 .cell {
+  font-family: 'Rock Salt', 'Arial';
   background-color: rgb(110, 110, 110);
   width: 100px;
   height: 100px;
@@ -176,6 +177,7 @@ export default {
 #backButton {
   padding: 10px 20px;
   font-size: 1.2rem;
+  font-family: 'Arial';
   cursor: pointer;
   border: none;
   border-radius: 5px;

@@ -82,6 +82,7 @@ export default {
 }
 
 button {
+  font-family: 'Arial';
   padding: 20px 40px;
   font-size: 1.5rem;
   cursor: pointer;
