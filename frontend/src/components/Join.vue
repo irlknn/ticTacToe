@@ -7,7 +7,7 @@ const props = defineProps({
   roomId: { type: String, required: true },
 })
 
-const socket = io(window.location.origin)
+const socket = io(import.meta.env.VITE_BACKEND_URL || window.location.origin)
 const router = useRouter()
 
 const notification = ref('Click Join to enter the game room')
