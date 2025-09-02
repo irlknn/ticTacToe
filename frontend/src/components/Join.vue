@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import io from 'socket.io-client'
-import { defineProps } from 'vue'
+import { defineProps, ref, watch, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
   roomId: { type: String, required: true }
@@ -10,23 +10,48 @@ const props = defineProps({
 const socket = io('http://localhost:3000')
 const router = useRouter()
 
+const notification = ref('Click Join to enter the game room')
+const isDisabled = ref(false)
+
+function onRoomJoinError({ error }) {
+  notification.value = error
+  isDisabled.value = true
+}
+function onRoomJoined(roomId) {
+  router.push(`/game/${props.roomId}`)
+}
+
+onMounted(() => {
+  socket.on('roomJoinError', onRoomJoinError)
+  socket.once('roomJoined', onRoomJoined)
+})
+
+onUnmounted(() => {
+  socket.off('roomJoinError', onRoomJoinError)
+  socket.off('roomJoined', onRoomJoined)
+})
+
+watch(() => props.roomId, (newVal) => {
+  notification.value = 'Click Join to enter the game room'
+  isDisabled.value = false
+})
+
 function joinRoom(roomId) {
-  socket.emit('joinRoom', { roomId: props.roomId })
+  if (!props.roomId) {
+    notification.value = 'Please enter a valid Room ID'
+    return
+  }
 
-  socket.once('roomJoined', () => {
-    router.push(`/game/${props.roomId}`)
-  })
-
-  socket.on('roomJoinError', ({ error }) => {
-    console.error(error)
-  })
-
+  socket.emit('joinRoom', props.roomId)
   console.log(`Joining room: ${roomId}`)
 }
 </script>
 
 <template>
-  <button @click="joinRoom(props.roomId)" class="joinButton">Join</button>
+  <button @click="joinRoom(props.roomId)" class="joinButton" :disabled="isDisabled || !props.roomId">
+    Join
+  </button>
+  <p>{{ notification }}</p>
 </template>
 <!-- <script>
 import io from 'socket.io-client'
@@ -64,13 +89,13 @@ function joinRoom(roomId) {
 
 <style>
 .joinButton {
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: rgb(30, 105, 25);
-    color: white;
-    transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(30, 105, 25);
+  color: white;
+  transition: background-color 0.3s ease;
 }
 </style>

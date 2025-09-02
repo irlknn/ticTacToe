@@ -2,9 +2,10 @@
 import { ref, onMounted } from 'vue'
 import io from 'socket.io-client'
 import { useRoute } from 'vue-router'
+import { node } from 'globals'
 
 const socket = io('http://localhost:3000')
-const route = useRoute()
+const router = useRoute()
 
 onMounted(() => {
   socket.emit('joinRoom', { roomId: this.roomId })
@@ -27,6 +28,7 @@ export default {
       isOver: false,
       isTie: false,
       winner: null,
+      notification: '-',
     }
   },
   methods: {
@@ -75,14 +77,22 @@ export default {
         this.isTie = true
     },
     resetBoard() {
+      socket.emit('resetGame', this.roomId);
+    },
+    leaveGame() {
+      socket.emit('leaveRoom', this.roomId);
+      socket.disconnect();
+      this.$router.push('/')
+    },
+  },
+  created() {
+    socket.on('resetGame', () => {
       this.content = ['', '', '', '', '', '', '', '', '']
       this.turn = true
       this.isOver = false
       this.isTie = false
       this.winner = null
-    },
-  },
-  created() {
+    });
     socket.on('play', (index) => {
       console.log('received index: ', index)
       this.draw(index, true)
@@ -108,12 +118,14 @@ export default {
     <div id="cell7" class="cell" @click="draw(8, false)">{{ content[8] }}</div>
   </div>
   <div class="textContainer">
-
-    <p class="text" v-if="isTie">Game is tie</p>
-    <p class="text" id="winner" v-if="isOver">Winner is {{ winner }}</p>
+    <p class="text" v-if="!isOver && !isTie">Turn: {{ turn ? 'X' : 'O' }}</p>
+    <p class="text" id="winner" v-if="isTie || isOver">
+      {{ isTie ? "Game is tie" : `Winner is ${winner}` }}
+    </p>
     <button id="RestartButton" @click="resetBoard()" v-if="isOver || isTie">Reset Board</button>
   </div>
-  <button id="backButton" @click="$router.push('/')">Leave</button>
+  <p class="text">{{ notification }}</p>
+  <button id="backButton" @click="leaveGame()">Leave</button>
 </template>
 
 <style>
@@ -123,6 +135,7 @@ export default {
   font-size: 1.3rem;
   margin: 10px 0;
 }
+
 .textContainer {
   display: flex;
   flex-direction: column;
@@ -130,6 +143,7 @@ export default {
   justify-content: center;
   height: 100px;
 }
+
 .cell {
   background-color: rgb(110, 110, 110);
   width: 100px;
@@ -159,7 +173,8 @@ export default {
   background-color: rgba(218, 218, 218);
 }
 
-#RestartButton, #backButton {
+#RestartButton,
+#backButton {
   padding: 10px 20px;
   font-size: 1.2rem;
   cursor: pointer;
