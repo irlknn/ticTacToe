@@ -4,7 +4,7 @@ import io from 'socket.io-client'
 import { useRoute } from 'vue-router'
 import { node } from 'globals'
 
-const socket = io('http://localhost:3000')
+const socket = io(window.location.origin)
 const router = useRoute()
 
 onMounted(() => {

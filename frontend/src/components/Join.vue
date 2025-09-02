@@ -7,7 +7,7 @@ const props = defineProps({
   roomId: { type: String, required: true },
 })
 
-const socket = io('http://localhost:3000')
+const socket = io(window.location.origin)
 const router = useRouter()
 
 const notification = ref('Click Join to enter the game room')
