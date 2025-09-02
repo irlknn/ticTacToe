@@ -7,8 +7,19 @@ const socket = io(import.meta.env.VITE_BACKEND_URL)
 const router = useRoute()
 
 onMounted(() => {
-  socket.emit('joinRoom', { roomId: this.roomId })
+  socket.emit('joinRoom', { roomId: props.roomId })
   console.log('Connected to room:', this.roomId)
+  socket.on('resetGame', () => {
+    this.content = ['', '', '', '', '', '', '', '', '']
+    this.turn = true
+    this.isOver = false
+    this.isTie = false
+    this.winner = null
+  })
+  socket.on('play', (index) => {
+    console.log('received index: ', index)
+    this.draw(index, true)
+  })
 })
 
 export default {
@@ -83,20 +94,6 @@ export default {
       this.$router.push('/')
     },
   },
-  created() {
-    socket.on('resetGame', () => {
-      this.content = ['', '', '', '', '', '', '', '', '']
-      this.turn = true
-      this.isOver = false
-      this.isTie = false
-      this.winner = null
-    })
-    socket.on('play', (index) => {
-      console.log('received index: ', index)
-      this.draw(index, true)
-    })
-    socket.emit('joinRoom', this.roomId)
-  },
 }
 </script>
 
@@ -113,7 +110,7 @@ export default {
     <div id="cell5" class="cell" @click="draw(5, false)">{{ content[5] }}</div>
     <div id="cell6" class="cell" @click="draw(6, false)">{{ content[6] }}</div>
     <div id="cell7" class="cell" @click="draw(7, false)">{{ content[7] }}</div>
-    <div id="cell7" class="cell" @click="draw(8, false)">{{ content[8] }}</div>
+    <div id="cell8" class="cell" @click="draw(8, false)">{{ content[8] }}</div>
   </div>
   <div class="textContainer">
     <p class="text" v-if="!isOver && !isTie">Turn: {{ turn ? 'X' : 'O' }}</p>
