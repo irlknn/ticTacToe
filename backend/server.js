@@ -4,16 +4,13 @@ const http = require('http')
 const { Server } = require('socket.io')
 
 const server = http.createServer(app)
-const io = new Server(server, { cors: { origin: "*" } })
-
-// serve frontend build
-// app.use(express.static(path.join(__dirname, '../frontend/dist')))
-
-// app.get(/.*/, (req, res) => {
-//   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'))
-// })
-
-// const { error } = require('console');
+const io = new Server(server, {
+  cors: {
+    origin: "https://tic-tac-toe-lmel.onrender.com",
+    methods: ["GET", "POST"]
+  }
+})
+// const io = new Server(server, { cors: { origin: "*" } })
 
 io.on('connection', (socket) => {
     console.log('user connected');
@@ -87,3 +84,13 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 //         methods: ['GET', 'POST'],
 //     }
 // });
+
+
+// serve frontend build
+// app.use(express.static(path.join(__dirname, '../frontend/dist')))
+
+// app.get(/.*/, (req, res) => {
+//   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'))
+// })
+
+// const { error } = require('console');
