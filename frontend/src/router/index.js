@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import JoinView from '../views/JoinView.vue'
 import Menu from '../views/MenuView.vue'
 import GameBoard from '../components/GameBoard.vue'
 
@@ -10,11 +9,6 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: Menu,
-    },
-    {
-      path: '/join',
-      name: 'join',
-      component: JoinView,
     },
     {
       path: '/game/:roomId',

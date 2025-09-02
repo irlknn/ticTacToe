@@ -1,37 +1,42 @@
 <script>
 import { ref } from 'vue'
 import RoomIDComponent from '../components/RoomService.vue'
-import { useRouter } from 'vue-router'
+import JoinComponent from '../components/JoinComponent.vue'
 
 export default {
-  components: { RoomIDComponent },
+  components: { RoomIDComponent, JoinComponent },
   setup() {
-    const showBanner = ref(false)
-    const router = useRouter()
+    const roomBanner = ref(false)
+    const joinBanner = ref(false)
 
     function showRoomIdBanner() {
-      showBanner.value = true
+      roomBanner.value = true
+    }
+    function showJoinBanner() {
+      joinBanner.value = true
     }
     function closeBanner() {
-      showBanner.value = false
+      roomBanner.value = false
+      joinBanner.value = false
     }
-    function goToJoin() {
-      router.push('/join')
-    }
-    return { showBanner, showRoomIdBanner, closeBanner, goToJoin }
+    return { joinBanner, roomBanner, showRoomIdBanner, showJoinBanner, closeBanner, }
   },
 }
 </script>
 
 <template>
   <div class="bannerContainer">
-    <div v-if="showBanner" class="banner">
-      <button class="closeBtn" @click="closeBanner">x</button>
+    <div v-if="joinBanner" class="joinBanner">
+      <button class="closeButton" @click="closeBanner">x</button>
+      <JoinComponent />
+    </div>
+    <div v-if="roomBanner" class="roomBanner">
+      <button class="closeButton" @click="closeBanner">x</button>
       <RoomIDComponent />
     </div>
     <div class="menuContainer">
       <button id="createButton" @click="showRoomIdBanner">Create Game</button>
-      <button id="joinButton" @click="goToJoin">Join Game</button>
+      <button id="joinButton" @click="showJoinBanner">Join Game</button>
     </div>
   </div>
 </template>
@@ -40,10 +45,11 @@ export default {
 .bannerContainer {
   position: relative;
   width: 100%;
-  min-height: 400px;
+  align-items: center;
 }
 
-.banner {
+.roomBanner,
+.joinBanner {
   position: absolute;
   top: 0;
   left: 50%;
@@ -59,17 +65,23 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* min-height: 350px; */
 }
 
-.closeBtn {
+.closeButton {
   position: absolute;
-  top: 8px;
-  right: 12px;
+  top: 15px;
+  right: 20px;
+  padding: 10px;
   background: transparent;
   border: none;
   font-size: 1.5rem;
-  color: #888;
+  color: rgb(110, 110, 110);
   cursor: pointer;
+}
+
+.closeButton:hover {
+  color: #555;
 }
 
 .menuContainer {
@@ -81,7 +93,8 @@ export default {
   min-height: 400px;
 }
 
-button {
+#createButton,
+#joinButton {
   font-family: 'Arial';
   padding: 20px 40px;
   font-size: 1.5rem;
@@ -93,7 +106,8 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+#createButton:hover,
+#joinButton:hover {
   background-color: rgb(149, 149, 149);
 }
 

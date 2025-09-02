@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue'
 import io from 'socket.io-client'
 import { useRoute } from 'vue-router'
-import { node } from 'globals'
 
 const socket = io(import.meta.env.VITE_BACKEND_URL)
 const router = useRoute()
