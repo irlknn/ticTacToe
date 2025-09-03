@@ -7,7 +7,7 @@ const props = defineProps({
   roomId: { type: String, required: true },
 })
 
-const socket = io(import.meta.env.VITE_BACKEND_URL)
+const socket = io()
 const router = useRouter()
 
 const notification = ref('Click Join to enter the game room')
@@ -17,7 +17,8 @@ function onRoomJoinError({ error }) {
   notification.value = error
   isDisabled.value = true
 }
-function onRoomJoined(roomId) {
+
+function onRoomJoined() {
   router.push(`/game/${props.roomId}`)
 }
 
@@ -39,20 +40,20 @@ watch(
   },
 )
 
-function joinRoom(roomId) {
+function joinRoom() {
   if (!props.roomId) {
     notification.value = 'Please enter a valid Room ID'
     return
   }
 
   socket.emit('joinRoom', props.roomId)
-  console.log(`Joining room: ${roomId}`)
+  console.log(`Joining room: ${props.roomId}`)
 }
 </script>
 
 <template>
   <button
-    @click="joinRoom(props.roomId)"
+    @click="joinRoom"
     class="joinButton"
     :disabled="isDisabled || !props.roomId"
   >

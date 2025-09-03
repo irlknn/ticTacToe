@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import io from 'socket.io-client'
 import Join from './Join.vue'
 
-const socket = io(import.meta.env.VITE_BACKEND_URL)
+const socket = io()
 const router = useRouter()
 const room = ref(Math.random().toString(36).substring(2, 9))
 

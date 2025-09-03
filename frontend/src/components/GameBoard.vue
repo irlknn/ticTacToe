@@ -1,15 +1,10 @@
 <script>
-import { ref, onMounted } from 'vue'
 import io from 'socket.io-client'
 import { useRoute } from 'vue-router'
 
-const socket = io(import.meta.env.VITE_BACKEND_URL)
-const router = useRoute()
-
-onMounted(() => {
-  socket.emit('joinRoom', { roomId: props.roomId })
-  console.log('Connected to room:', this.roomId)
-})
+// const socket = io(import.meta.env.VITE_BACKEND_URL)
+const socket = io()
+const route = useRoute()
 
 export default {
   name: 'GameContainer',
@@ -83,7 +78,31 @@ export default {
       this.$router.push('/')
     },
   },
-  created() {
+  // created() {
+  //   socket.emit('joinRoom', { roomId: this.roomId })
+  //   console.log('Connected to room:', this.roomId)
+
+  //   socket.on('resetGame', () => {
+  //     this.content = ['', '', '', '', '', '', '', '', '']
+  //     this.turn = true
+  //     this.isOver = false
+  //     this.isTie = false
+  //     this.winner = null
+  //   })
+  //   socket.on('play', ({ roomId, index }) => {
+  //     console.log(`received index: ${index} from room: ${roomId}`)
+  //     this.draw(index, true)
+  //   })
+  // },
+  mounted() {
+    socket.emit('joinRoom', { roomId: this.roomId })
+    console.log('Connected to room:', this.roomId)
+
+    socket.on('play', ({ roomId, index }) => {
+      console.log(`received index: ${index} from room: ${roomId}`)
+      this.draw(index, true)
+    })
+
     socket.on('resetGame', () => {
       this.content = ['', '', '', '', '', '', '', '', '']
       this.turn = true
@@ -91,11 +110,11 @@ export default {
       this.isTie = false
       this.winner = null
     })
-    socket.on('play', (index) => {
-      console.log('received index: ', index)
-      this.draw(index, true)
-    })
   },
+  beforeUnmount() {
+    socket.off('play')
+    socket.off('resetGame')
+  }
 }
 </script>
 
