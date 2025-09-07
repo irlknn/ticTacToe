@@ -27,6 +27,7 @@ export default {
   },
   methods: {
     draw(index, drawFromOther) {
+      if (this.isOver || this.isTie) return
       if (this.content[index] == '') {
         this.content[index] = this.turn ? 'X' : 'O'
 
@@ -58,6 +59,7 @@ export default {
         ) {
           this.isOver = true
           this.winner = this.content[a]
+
         }
       }
     },
@@ -162,32 +164,31 @@ export default {
 
 .cell {
   font-family: 'Rock Salt', 'Arial';
-  background-color: rgb(110, 110, 110);
+  background-color: rgb(255, 255, 255);
   width: 100px;
   height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 2rem;
-  color: white;
+  color: rgb(0, 0, 0);
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .cell:hover {
-  background-color: rgb(160, 160, 160);
+  background-color: rgb(208, 208, 208);
 }
 
 .cellContainer {
-  border: 10px solid rgb(218, 218, 218);
+  border: 10px solid rgb(255, 255, 255);
+  background-color: rgb(0, 0, 0);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   grid-column-gap: 5px;
   grid-row-gap: 5px;
-
-  background-color: rgba(218, 218, 218);
 }
 
 #RestartButton,
@@ -198,7 +199,7 @@ export default {
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  background-color: rgb(110, 110, 110);
+  background-color: rgb(0, 0, 0);
   color: white;
   transition: background-color 0.4s ease;
 }
@@ -213,5 +214,33 @@ export default {
 
 #backButton:hover {
   background-color: rgb(101, 20, 20);
+}
+
+@media(prefers-color-scheme: dark) {
+  .cell {
+    background-color: rgb(32, 32, 32);
+    color: rgb(255, 255, 255);
+  }
+
+  .cell:hover {
+    background-color: rgb(80, 80, 80);
+  }
+
+  .cellContainer {
+    border: 10px solid rgb(32, 32, 32);
+    background-color: rgb(220, 220, 220);
+  }
+
+  #RestartButton,
+  #backButton {
+    background-color: rgb(220, 220, 220);
+    color: rgb(32, 32, 32);
+    transition: all 0.4s ease;
+  }
+
+  #RestartButton:hover,
+  #backButton:hover {
+    color: white;
+  }
 }
 </style>

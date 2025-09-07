@@ -6,7 +6,11 @@ import Join from './Join.vue'
 
 const socket = io()
 const router = useRouter()
-const room = ref(Math.random().toString(36).substring(2, 9))
+const room = ref(
+  Math.floor(Math.random() * 1000000)
+    .toString()
+    .padStart(6, "0")
+)
 
 </script>
 

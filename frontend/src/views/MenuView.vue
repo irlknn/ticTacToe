@@ -76,12 +76,12 @@ export default {
   background: transparent;
   border: none;
   font-size: 1.5rem;
-  color: rgb(110, 110, 110);
+  color: rgb(0, 0, 0);
   cursor: pointer;
 }
 
 .closeButton:hover {
-  color: #555;
+  color: rgb(54, 54, 54);
 }
 
 .menuContainer {
@@ -101,18 +101,45 @@ export default {
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  background-color: rgb(110, 110, 110);
+  background-color: rgb(0, 0, 0);
   color: white;
   transition: background-color 0.3s ease;
 }
 
 #createButton:hover,
 #joinButton:hover {
-  background-color: rgb(149, 149, 149);
+  background-color: rgb(53, 53, 53);
 }
 
 .joinLink {
   text-decoration: none;
   color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  .roomBanner,
+  .joinBanner {
+    border: 2px solid rgb(200, 200, 200);
+    color: rgb(0, 0, 0);
+  }
+
+  .closeButton {
+    color: rgb(0, 0, 0);
+  }
+
+  .closeButton:hover {
+    color: rgb(43, 43, 43);
+  }
+
+  #createButton,
+  #joinButton {
+    background-color: rgb(220, 220, 220);
+    color: rgb(0, 0, 0);
+  }
+
+  #createButton:hover,
+  #joinButton:hover {
+    background-color: rgb(180, 180, 180);
+  }
 }
 </style>
