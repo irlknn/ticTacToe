@@ -16,7 +16,7 @@ const io = new Server(server) // на тій же адресі, CORS не пот
 // });
 // const io = new Server(server, { cors: { origin: "*" } })
 
-const distPath = path.join(__dirname, '/frontend/dist')
+const distPath = path.join(__dirname, '../frontend/dist')
 app.use(express.static(distPath))
 
 app.get(/.*/, (req, res) => {
